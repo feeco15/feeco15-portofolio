@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A Portfolio</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css" rel="stylesheet" />
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #4b5563;
+            border-radius: 10px;
+        }
+
+        body {
+            background-color: #0f0f0f;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .project-card {
+            position: relative;
+            overflow: hidden;
+            border: 3px solid transparent;
+        }
+
+        .project-card:hover {
+            border-image: linear-gradient(135deg, #00ffff, #7f00ff) 1;
+        }
+
+        .view-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: #18181b;
+            border: 1px solid #4b5563;
+            border-radius: 9999px;
+            padding: 0.4rem 0.9rem;
+            font-size: 0.875rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn:hover {
+            background-color: #00ffff;
+            color: #000000;
+            border-color: #00ffff;
+        }
+    </style>
+</head>
+
+<body class="text-white">
+    <header class="bg-[#1a1a1a] text-gray-300 sticky top-0 z-50 shadow-md">
+        <div class="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
+            <a href="#" class="text-xl font-semibold text-cyan-400">feeco15</a>
+            <nav class="space-x-6">
+                <a href="#home" class="hover:text-white transition">Home</a>
+                <a href="#projects" class="hover:text-white transition">Projects</a>
+                <a href="#about" class="hover:text-white transition">About</a>
+            </nav>
+        </div>
+    </header>
+
+    <section id="home" class="min-h-screen flex flex-col items-center justify-center px-6 text-center">
+        <h1 class="text-3xl md:text-5xl font-bold">
+            Hi. I'm <span id="typed" class="text-cyan-400"></span>
+        </h1>
+        <p class="mt-4 text-gray-400 max-w-xl">
+            Description will be place here soon.
+        </p>
+    </section>
+
+    <section id="projects" class="min-h-screen py-24 px-6">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-bold mb-12 text-center">What i've done?</h2>
+            <div id="project-list" class="grid md:grid-cols-2 gap-6"></div>
+        </div>
+    </section>
+
+    <section id="about" class="py-24 px-6 bg-[#1a1a1a] text-gray-300">
+        <div class="max-w-2xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <!-- left -->
+            <div class="flex flex-col items-center md:items-start text-center md:text-left">
+                <img src="assets/petrik.jpg" alt="Profile" class="w-40 h-40 rounded-full object-cover mb-4 border-2" />
+                <h3 class="text-xl font-bold mb-1">feeco15</h3>
+                <p class="text-sm mb-2">Fico, 23</p>
+                <a href="https://github.com/feeco15" target="_blank"
+                    class="text-cyan-400 hover:text-white transition text-2xl">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+
+            <!--right-->
+            <div>
+                <p class="text-lg leading-relaxed mb-6">Not revealed yet.</p>
+                <h4 class="font-bold mb-3">Skills & Expertise</h4>
+                <div class="flex flex-wrap gap-3">
+                    <span class="text-white px-4 py-1 rounded-full text-sm border">Python</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <footer class="bg-[#1a1a1a] text-gray-400 py-4 px-6 mt-16">
+        <div class="max-w-6xl mx-auto flex items-center justify-between h-14">
+            <p class="text-sm">© 2025</p>
+            <a href="https://github.com/feeco15" target="_blank"
+                class="flex items-center gap-2 hover:text-white transition">
+                <i class="fab fa-github text-xl"></i>
+                <span class="hidden sm:inline">GitHub</span>
+            </a>
+        </div>
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script>
+        new Typed('#typed', {
+            strings: [
+                'a cyber security learner.',
+                'feeco15.'
+            ],
+            typeSpeed: 60,
+            backSpeed: 40,
+            loop: true
+        });
+    </script>
+
+
+    <script>
+        const username = "feeco15";
+        const projectList = document.getElementById("project-list");
+
+        fetch(`https://api.github.com/users/${username}/repos?sort=updated`)
+            .then(res => res.json())
+            .then(repos => {
+                repos.forEach(repo => {
+                    const card = document.createElement("div");
+                    card.className = "project-card rounded-lg p-6 flex flex-col justify-between";
+
+                    const title = document.createElement("h3");
+                    title.className = "text-xl font-semibold mb-2 transition-colors duration-300 hover:text-cyan-400";
+                    const link = document.createElement("a");
+                    link.href = repo.html_url;
+                    link.target = "_blank";
+                    link.textContent = repo.name;
+                    title.appendChild(link);
+
+                    const desc = document.createElement("p");
+                    desc.className = "text-sm text-gray-400 mb-6";
+                    desc.textContent = repo.description || "No description provided.";
+
+                    const buttonWrapper = document.createElement("div");
+                    buttonWrapper.className = "mt-auto flex justify-end items-end";
+
+                    const button = document.createElement("a");
+                    button.href = repo.html_url;
+                    button.target = "_blank";
+                    button.className = "view-btn";
+                    button.innerHTML = `<i class="fab fa-github"></i> View Repository`;
+
+                    buttonWrapper.appendChild(button);
+                    card.appendChild(title);
+                    card.appendChild(desc);
+                    card.appendChild(buttonWrapper);
+
+                    projectList.appendChild(card);
+                });
+            })
+            .catch(err => {
+                projectList.innerHTML = `<p class="text-red-500 text-center">Error loading repositories.</p>`;
+                console.error(err);
+            });
+    </script>
+
+</body>
+
+</html>
